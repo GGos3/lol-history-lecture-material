@@ -4,7 +4,7 @@ class BaseUrl {
     companion object {
         const val RIOT_API_BASE_URL = "https://kr.api.riotgames.com/"
         const val RIOT_API_V5_BASE_URL = "https://asia.api.riotgames.com/"
-        const val RIOT_API_KEY = "RGAPI-e68e1f28-296e-4391-bc6e-8497b26f7fc9"
+        const val RIOT_API_KEY = "RGAPI-05d8ac89-f2ef-4c67-b93c-cc6a5697f20d"
 
         const val RIOT_API_GET_SUMMONER_BY_ENCRYPTION_SUMMONER_ID = "lol/summoner/v4/summoners/"
         const val RIOT_API_GET_SUMMONER = "lol/summoner/v4/summoners/by-name/"
