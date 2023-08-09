@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.lolhistory.datamodel.MatchHistory
 import com.lolhistory.datamodel.SummonerIdInfo
 import com.lolhistory.datamodel.SummonerRankInfo
 import com.lolhistory.repository.RiotRepository
@@ -34,7 +35,7 @@ class MainActivityViewModel: ViewModel() {
                     // 랭크 정보 검색
                     getSummonerRankInfo(t.id)
                     // 매치 리스트 검색
-
+                    getMatchList(t.puuid)
                 }
 
                 override fun onError(e: Throwable) {
@@ -59,6 +60,42 @@ class MainActivityViewModel: ViewModel() {
                 }
 
                 override fun onError(e: Throwable) {
+                }
+            })
+    }
+
+    private fun getMatchList(puuid: String) {
+        RiotRepository.getMatchHistoryList(puuid, 0, 16)
+            .subscribe(object : SingleObserver<List<String>> {
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onSuccess(t: List<String>) {
+                    for (match in t) {
+                        // 매치 상세정보 가져오기
+                        getMatchHistory(match)
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.e("TESTLOG", "[getMatchList] error: $e")
+                }
+            })
+    }
+
+    private fun getMatchHistory(matchId: String) {
+        RiotRepository.getMatchHistory(matchId)
+            .subscribe(object : SingleObserver<MatchHistory> {
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onSuccess(t: MatchHistory) {
+                    Log.d("TESTLOG", "gameVersion: ${t.info.gameVersion}")
+                    Log.d("TESTLOG", "gameVersion: ${t.info.participants[0].champName}")
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.e("TESTLOG", "[getMatchHistory] error: $e")
                 }
             })
     }
