@@ -20,7 +20,7 @@ data class MatchHistory(
         var queueId: Int,
 
         @SerializedName("participants")
-        var participants: Participants
+        var participants: List<Participants>
     ) {
         data class Participants(
             @SerializedName("assists")
