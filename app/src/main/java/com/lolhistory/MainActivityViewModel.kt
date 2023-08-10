@@ -19,9 +19,15 @@ class MainActivityViewModel: ViewModel() {
     private val _summonerRankInfoLiveData = MutableLiveData<SummonerRankInfo>()
     val summonerRankInfoLiveData: LiveData<SummonerRankInfo> get() = _summonerRankInfoLiveData
 
+    private val _matchHistoryListLiveData = MutableLiveData<List<MatchHistory>>()
+    val matchHistoryListLiveData: LiveData<List<MatchHistory>> get() = _matchHistoryListLiveData
+
+    private var matchHistories: ArrayList<MatchHistory> = ArrayList()
 
     fun getSummonerIdInfo(summonerName: String) {
-        if (summonerName.isEmpty()) return
+        if (summonerName.isEmpty()) _summonerInfoLiveData.value = null
+
+        matchHistories.clear()
         RiotRepository
             .getSummonerIdInfo(summonerName)
             .subscribe(object: SingleObserver<SummonerIdInfo> {
@@ -90,8 +96,10 @@ class MainActivityViewModel: ViewModel() {
                 }
 
                 override fun onSuccess(t: MatchHistory) {
-                    Log.d("TESTLOG", "gameVersion: ${t.info.gameVersion}")
-                    Log.d("TESTLOG", "gameVersion: ${t.info.participants[0].champName}")
+                    matchHistories.add(t)
+                    if (matchHistories.size > 15) {
+                        _matchHistoryListLiveData.value = matchHistories
+                    }
                 }
 
                 override fun onError(e: Throwable) {
