@@ -33,7 +33,7 @@ data class MatchHistory(
             var championId: Int,
 
             @SerializedName("championName")
-            var champName: String,
+            var championName: String,
 
             @SerializedName("deaths")
             var deaths: Int,
